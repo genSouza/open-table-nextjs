@@ -1,25 +1,12 @@
 import Image from "next/image";
 import React from "react";
+import Navbar from "../components/Navbar";
 
 const Search = () => {
   return (
     <main className="w-screen min-h-screen bg-gray-100">
       <main className="m-auto bg-white max-w-screen-2xl">
-        {/* NAVBAR */}
-        <nav className="flex justify-between p-2 bg-white">
-          <a href="" className="text-2xl font-bold text-gray-700">
-            {" "}
-            OpenTable{" "}
-          </a>
-          <div>
-            <div className="flex">
-              <button className="p-1 px-4 mr-3 text-white bg-blue-400 border rounded">
-                Sign in
-              </button>
-              <button className="p-1 px-4 border rounded">Sign up</button>
-            </div>
-          </div>
-        </nav>
+        <Navbar />
         {/* HEADER */}
         <div className="bg-gradient-to-r to-[#5f6984] from-[#0f1f47] p-2">
           <div className="flex justify-center py-3 m-auto text-lg text-left">

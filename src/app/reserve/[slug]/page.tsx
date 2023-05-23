@@ -1,3 +1,4 @@
+import Navbar from "@/app/components/Navbar";
 import Image from "next/image";
 import React from "react";
 
@@ -5,22 +6,7 @@ const Reserve = () => {
   return (
     <main className="w-screen min-h-screen bg-gray-100">
       <main className="m-auto bg-white max-w-screen-2xl">
-        {/* NAVBAR */}
-        <nav className="flex justify-between p-2 bg-white">
-          <a href="" className="text-2xl font-bold text-gray-700">
-            {" "}
-            OpenTable{" "}
-          </a>
-          <div>
-            <div className="flex">
-              <button className="p-1 px-4 mr-3 text-white bg-blue-400 border rounded">
-                Sign in
-              </button>
-              <button className="p-1 px-4 border rounded">Sign up</button>
-            </div>
-          </div>
-        </nav>
-        {/* NAVBAR END */}
+        <Navbar />
         <div className="h-screen border-t">
           <div className="w-3/5 m-auto py-9">
             {/* HEADER */}
