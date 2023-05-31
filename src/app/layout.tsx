@@ -1,8 +1,8 @@
 import Navbar from "./components/Navbar";
 import "./globals.css";
-import { Inter } from "next/font/google";
+//import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+//const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "OpenTable",
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={inter.className}>
+      <body>
         <main className="w-screen min-h-screen bg-gray-100">
           <main className="m-auto bg-white max-w-screen-2xl">
             <Navbar />
