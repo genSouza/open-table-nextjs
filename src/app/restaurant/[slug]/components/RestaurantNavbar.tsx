@@ -1,16 +1,15 @@
+import Link from "next/link";
 import React from "react";
 
-const RestaurantNavbar = () => {
+const RestaurantNavbar = ({ slug }: { slug: string }) => {
   return (
     <nav className="flex pb-2 border-b text-reg">
-      <a href="" className="mr-7">
-        {" "}
-        Overview{" "}
-      </a>
-      <a href="" className="mr-7">
-        {" "}
-        Menu{" "}
-      </a>
+      <Link href={`/restaurant/${slug}`} className="mr-7">
+        Overview
+      </Link>
+      <Link href={`/restaurant/${slug}/menu`} className="mr-7">
+        Menu
+      </Link>
     </nav>
   );
 };
