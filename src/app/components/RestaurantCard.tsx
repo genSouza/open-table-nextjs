@@ -4,6 +4,7 @@ import Link from "next/link";
 import { RestaurantCardType } from "../page";
 import Price from "./Price";
 import CalculateReviewRatingAverage from "@/utils/calculateReviewRatingAverage";
+import Stars from "./Stars";
 
 interface Props {
   restaurant: RestaurantCardType;
@@ -23,7 +24,7 @@ const RestaurantCard = ({ restaurant }: Props) => {
         <div className="p-1">
           <h3 className="mb-2 text-2xl font-bold">{restaurant.name}</h3>
           <div className="flex items-start">
-            <div className="flex mb-2">*****</div>
+            <Stars reviews={restaurant.reviews} />
             <p className="ml-2">
               {restaurant.reviews.length} review
               {restaurant.reviews.length === 1 ? "" : "s"}
