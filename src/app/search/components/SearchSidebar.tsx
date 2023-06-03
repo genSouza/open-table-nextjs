@@ -1,22 +1,29 @@
-import React from "react";
+import { Cuisine, Location } from "@prisma/client";
 
-const Sidebar = () => {
+const SearchSidebar = ({
+  locations,
+  cuisines,
+}: {
+  locations: Location[];
+  cuisines: Cuisine[];
+}) => {
   return (
     <div className="w-1/5">
       <div className="pb-4 border-b">
         <h1 className="mb-2">Region</h1>
-        <p className="font-light text-reg">Toronto</p>
-        <p className="font-light text-reg">Ottawa</p>
-        <p className="font-light text-reg">Montreal</p>
-        <p className="font-light text-reg">Hamilton</p>
-        <p className="font-light text-reg">Kingston</p>
-        <p className="font-light text-reg">Niagara</p>
+        {locations.map((location) => (
+          <p key={location.id} className="font-light capitalize text-reg">
+            {location.name}
+          </p>
+        ))}
       </div>
       <div className="pb-4 mt-3 border-b">
         <h1 className="mb-2">Cuisine</h1>
-        <p className="font-light text-reg">Mexican</p>
-        <p className="font-light text-reg">Italian</p>
-        <p className="font-light text-reg">Chinese</p>
+        {cuisines.map((cuisine) => (
+          <p className="font-light capitalize text-reg" key={cuisine.id}>
+            {cuisine.name}
+          </p>
+        ))}
       </div>
       <div className="pb-4 mt-3">
         <h1 className="mb-2">Price</h1>
@@ -36,4 +43,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SearchSidebar;

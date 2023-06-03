@@ -1,7 +1,13 @@
 import Header from "./components/Header";
-import Sidebar from "./components/SearchSidebar";
-import Card from "./components/RestaurantCard";
-
+import SearchSidebar from "./components/SearchSidebar";
+import RestaurantCard from "./components/RestaurantCard";
+import {
+  Cuisine,
+  PRICE,
+  PrismaClient,
+  Restaurant,
+  Location,
+} from "@prisma/client";
 
 export const metadata = {
   title: "Search restaurants OpenTable",
@@ -9,14 +15,76 @@ export const metadata = {
   content: "width=device-width, initial-scale=1",
 };
 
-const Search = () => {
+const select = {
+  id: true,
+  name: true,
+  main_image: true,
+  price: true,
+  cuisine: true,
+  location: true,
+  slug: true,
+};
+
+const prisma = new PrismaClient();
+
+const fetchRestaurantsByCity = async (
+  city: string | undefined
+): Promise<
+  {
+    id: string;
+    name: string;
+    main_image: string;
+    price: PRICE;
+    cuisine: Cuisine;
+    location: Location;
+    slug: string;
+  }[]
+> => {
+  if (!city) return await prisma.restaurant.findMany({ select });
+
+  const restaurants = await prisma.restaurant.findMany({
+    where: {
+      location: {
+        name: {
+          equals: city.trim().toLowerCase(),
+        },
+      },
+    },
+    select,
+  });
+
+  if (!restaurants) throw new Error("No restaurants found");
+
+  return restaurants;
+};
+
+const fetchLocations = async (): Promise<Location[]> => {
+  return await prisma.location.findMany();
+};
+
+const fetchCuisines = async (): Promise<Cuisine[]> => {
+  return await prisma.cuisine.findMany();
+};
+
+const Search = async ({ searchParams }: { searchParams: { city: string } }) => {
+  const restaurants = await fetchRestaurantsByCity(searchParams.city);
+  const locations = await fetchLocations();
+  const cuisines = await fetchCuisines();
   return (
     <>
       <Header />
       <div className="flex items-start justify-between w-2/3 py-4 m-auto">
-        <Sidebar />
+        <SearchSidebar locations={locations} cuisines={cuisines} />
         <div className="w-5/6">
-          <Card />
+          {restaurants.length ? (
+            <>
+              {restaurants.map((restaurant) => (
+                <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+              ))}
+            </>
+          ) : (
+            <p>No restaurants found</p>
+          )}
         </div>
       </div>
     </>
