@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import LoginModal from "./LoginModal";
 
 const Navbar = () => {
   return (
@@ -9,10 +10,9 @@ const Navbar = () => {
       </Link>
       <div>
         <div className="flex">
-          <button className="p-1 px-4 mr-3 text-white bg-blue-400 border rounded">
-            Sign in
-          </button>
-          <button className="p-1 px-4 border rounded">Sign up</button>
+          <LoginModal isSignIn={true} />
+          <LoginModal isSignIn={false} />
+          {/* <button className="p-1 px-4 border rounded">Sign up</button> */}
         </div>
       </div>
     </nav>
