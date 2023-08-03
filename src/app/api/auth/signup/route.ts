@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import validator from "validator";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
   return NextResponse.json({ hello: "world" }, { status: 200 });
@@ -36,7 +39,6 @@ export async function POST(req: Request) {
     },
   ];
 
-  
   validationSchema.forEach((item) => {
     if (!item.valid) {
       errors.push(item.errorMessage);
@@ -45,6 +47,14 @@ export async function POST(req: Request) {
   if (errors.length > 0) {
     return NextResponse.json({ errorMessage: { errors } }, { status: 400 });
   }
+
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (user)
+    return NextResponse.json(
+      { errorMessage: { errors: ["User already exists"] } },
+      { status: 400 }
+    );
 
   return NextResponse.json(
     { body: { firstName, lastName, email, phone, city, password } },
