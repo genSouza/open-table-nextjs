@@ -19,6 +19,20 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [inputs, setInputs] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    city: "",
+    password: "",
+  });
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  };
+  const handleClicked = () => {
+    console.log(inputs);
+  };
   const signInStyle = "p-1 px-4 mr-3 text-white bg-blue-400 border rounded";
   const signOutStyle = "p-1 px-4 border rounded";
 
@@ -50,8 +64,15 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
                   ? "Log into your account"
                   : "Create your OpenTable account"}
               </h2>
-              <AuthModalInputs />
-              <button className="w-full p-3 mb-5 text-sm text-white uppercase bg-red-600 rounded disabled:bg-gray-400">
+              <AuthModalInputs
+                inputs={inputs}
+                handleChangeInput={handleChangeInput}
+                isSignIn={isSignIn}
+              />
+              <button
+                className="w-full p-3 mb-5 text-sm text-white uppercase bg-red-600 rounded disabled:bg-gray-400"
+                onClick={handleClicked}
+              >
                 {isSignIn ? "Sign in" : "Create an account"}
               </button>
             </div>
