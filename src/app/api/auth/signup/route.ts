@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
 import validator from "validator";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
-
-export async function GET(req: Request) {
-  return NextResponse.json({ hello: "world" }, { status: 200 });
-}
 
 export async function POST(req: Request) {
   const { firstName, lastName, email, phone, city, password } =
@@ -45,19 +42,29 @@ export async function POST(req: Request) {
     }
   });
   if (errors.length > 0) {
-    return NextResponse.json({ errorMessage: { errors } }, { status: 400 });
+    return NextResponse.json({ response: { errors } }, { status: 400 });
   }
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const userExists = await prisma.user.findUnique({ where: { email } });
 
-  if (user)
+  if (userExists)
     return NextResponse.json(
-      { errorMessage: { errors: ["User already exists"] } },
+      { response: { errors: ["User already exists"] } },
       { status: 400 }
     );
 
-  return NextResponse.json(
-    { body: { firstName, lastName, email, phone, city, password } },
-    { status: 200 }
-  );
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = await prisma.user.create({
+    data: {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      city: city,
+      password: hashedPassword,
+      phone: phone,
+    },
+  });
+
+  return NextResponse.json({ response: { user } }, { status: 200 });
 }
