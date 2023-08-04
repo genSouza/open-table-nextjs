@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import * as jose from "jose";
 import validator from "validator";
 
-const prisma = new PrismaClient();
+const prismaClient = new PrismaClient();
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
@@ -29,17 +29,21 @@ export async function POST(req: Request) {
   if (errors.length > 0) {
     return NextResponse.json({ response: { errors } }, { status: 400 });
   }
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prismaClient.user.findUnique({ where: { email } });
   if (!user)
     return NextResponse.json(
-      { response: { errors: ["Password is incorrect or user does not exist"] } },
+      {
+        response: { errors: ["Password is incorrect or user does not exist"] },
+      },
       { status: 401 }
     );
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch)
     return NextResponse.json(
-      { response: { errors: ["Password is incorrect or user does not exist"] } },
+      {
+        response: { errors: ["Password is incorrect or user does not exist"] },
+      },
       { status: 401 }
     );
   const alg = "HS256";
@@ -50,6 +54,8 @@ export async function POST(req: Request) {
     .setIssuedAt()
     .setExpirationTime("2h")
     .sign(secret);
+
+  prismaClient.$disconnect();
 
   return NextResponse.json({ response: { token: token } }, { status: 200 });
 }
