@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 
 import jwt from "jsonwebtoken";
-
-const prismaClient = new PrismaClient();
+import { prisma } from "../../../db/prisma";
 
 export async function GET(req: Request) {
   const bearerToken = req.headers.get("authorization");
   const token = bearerToken!.split(" ")[1];
   const payload = jwt.decode(token) as { userId: string };
-  const user = await prismaClient.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: payload.userId },
     select: {
       id: true,
@@ -27,8 +25,6 @@ export async function GET(req: Request) {
       { status: 401 }
     );
   }
-  
-  prismaClient.$disconnect();
 
   return NextResponse.json(
     {

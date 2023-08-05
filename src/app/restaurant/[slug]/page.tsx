@@ -5,8 +5,8 @@ import { Description } from "./components/Description";
 import Images from "./components/Images";
 import Reviews from "./components/Reviews";
 import ReservationCard from "./components/ReservationCard";
-import { PrismaClient, Review } from "@prisma/client";
-
+import { Review } from "@prisma/client";
+import { prisma } from "../../db/prisma";
 interface Restaurant {
   id: string;
   name: string;
@@ -16,7 +16,6 @@ interface Restaurant {
   reviews: Review[];
 }
 
-const prisma = new PrismaClient();
 const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
   const restaurant = await prisma.restaurant.findUnique({
     where: { slug },

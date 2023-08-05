@@ -1,13 +1,8 @@
 import Header from "./components/Header";
 import SearchSidebar from "./components/SearchSidebar";
 import RestaurantCard from "./components/RestaurantCard";
-import {
-  Cuisine,
-  PRICE,
-  PrismaClient,
-  Restaurant,
-  Location,
-} from "@prisma/client";
+import { Cuisine, PRICE, Restaurant, Location, Review } from "@prisma/client";
+import { prisma } from "../db/prisma";
 
 export const metadata = {
   title: "Search restaurants OpenTable",
@@ -28,10 +23,8 @@ const select = {
   cuisine: true,
   location: true,
   slug: true,
-  reviews: true
+  reviews: true,
 };
-
-const prisma = new PrismaClient();
 
 const fetchRestaurantsByCity = async (
   searchParams: SearchParams
@@ -44,6 +37,7 @@ const fetchRestaurantsByCity = async (
     cuisine: Cuisine;
     location: Location;
     slug: string;
+    reviews: Review[];
   }[]
 > => {
   if (!searchParams) return await prisma.restaurant.findMany({ select });

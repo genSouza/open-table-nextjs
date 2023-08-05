@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import validator from "validator";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-
-const prismaClient = new PrismaClient();
+import { prisma }  from "../../../db/prisma";
 
 export async function POST(req: Request) {
   const { firstName, lastName, email, phone, city, password } =
@@ -45,7 +43,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ response: { errors } }, { status: 400 });
   }
 
-  const userExists = await prismaClient.user.findUnique({ where: { email } });
+  const userExists = await prisma.user.findUnique({ where: { email } });
 
   if (userExists)
     return NextResponse.json(
@@ -55,7 +53,7 @@ export async function POST(req: Request) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await prismaClient.user.create({
+  const user = await prisma.user.create({
     data: {
       first_name: firstName,
       last_name: lastName,
@@ -66,7 +64,5 @@ export async function POST(req: Request) {
     },
   });
 
-  prismaClient.$disconnect();
-  
   return NextResponse.json({ response: { user } }, { status: 200 });
 }
