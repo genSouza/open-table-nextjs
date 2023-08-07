@@ -21,22 +21,20 @@ export async function GET(req: Request) {
 
   if (!user) {
     return NextResponse.json(
-      { response: { errors: ["Unauthorized request - invalid token"] } },
+      { message: { errors: ["Unauthorized request - invalid token"] } },
       { status: 401 }
     );
   }
 
   return NextResponse.json(
     {
-      response: {
-        user: {
-          userId: user.id,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          city: user.city,
-          email: user.email,
-          phone: user.phone,
-        },
+      user: {
+        userId: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        city: user.city,
+        email: user.email,
+        phone: user.phone,
       },
     },
     { status: 200 }

@@ -25,13 +25,13 @@ export async function POST(req: Request) {
     }
   });
   if (errors.length > 0) {
-    return NextResponse.json({ response: { errors } }, { status: 400 });
+    return NextResponse.json({ message: { errors } }, { status: 400 });
   }
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user)
     return NextResponse.json(
       {
-        response: { errors: ["Password is incorrect or user does not exist"] },
+        message: { errors: ["Password is incorrect or user does not exist"] },
       },
       { status: 401 }
     );
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   if (!passwordMatch)
     return NextResponse.json(
       {
-        response: { errors: ["Password is incorrect or user does not exist"] },
+        message: { errors: ["Password is incorrect or user does not exist"] },
       },
       { status: 401 }
     );
@@ -53,5 +53,5 @@ export async function POST(req: Request) {
     .setExpirationTime("2h")
     .sign(secret);
 
-  return NextResponse.json({ response: { token: token } }, { status: 200 });
+  return NextResponse.json({ message: { token: token } }, { status: 200 });
 }

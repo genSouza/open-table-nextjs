@@ -15,7 +15,7 @@ export async function middleware(req: NextRequest) {
     bearerToken.split(" ")[1].length === 0
   ) {
     return NextResponse.json(
-      { response: { errors: ["No token provided"] } },
+      { message: { errors: ["No token provided"] } },
       { status: 401 }
     );
   }
@@ -26,7 +26,7 @@ export async function middleware(req: NextRequest) {
     await jose.jwtVerify(token, secret);
   } catch (error) {
     return NextResponse.json(
-      { response: { errors: ["Unauthorized request - invalid token"] } },
+      { message: { errors: ["Unauthorized request - invalid token"] } },
       { status: 401 }
     );
   }

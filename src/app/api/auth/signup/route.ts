@@ -40,14 +40,14 @@ export async function POST(req: Request) {
     }
   });
   if (errors.length > 0) {
-    return NextResponse.json({ response: { errors } }, { status: 400 });
+    return NextResponse.json({ message: { errors } }, { status: 400 });
   }
 
   const userExists = await prisma.user.findUnique({ where: { email } });
 
   if (userExists)
     return NextResponse.json(
-      { response: { errors: ["User already exists"] } },
+      { message: { errors: ["User already exists"] } },
       { status: 400 }
     );
 
@@ -64,5 +64,5 @@ export async function POST(req: Request) {
     },
   });
 
-  return NextResponse.json({ response: { user } }, { status: 200 });
+  return NextResponse.json({ message: { user } }, { status: 200 });
 }
