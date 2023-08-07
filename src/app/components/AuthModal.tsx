@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthModalInputs from "./AuthModalInputs";
 
 const style = {
@@ -17,6 +17,8 @@ const style = {
 
 export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
   const [open, setOpen] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [inputs, setInputs] = useState({
@@ -27,6 +29,28 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
     city: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (isSignIn) {
+      if (inputs.email && inputs.password) {
+        return setDisabled(false);
+      }
+    } else {
+      if (
+        inputs.firstName &&
+        inputs.lastName &&
+        inputs.email &&
+        inputs.phone &&
+        inputs.city &&
+        inputs.password
+      ) {
+        return setDisabled(false);
+      }
+    }
+
+    setDisabled(true);
+  }, [inputs, isSignIn]);
+
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
@@ -72,6 +96,7 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
               <button
                 className="w-full p-3 mb-5 text-sm text-white uppercase bg-red-600 rounded disabled:bg-gray-400"
                 onClick={handleClicked}
+                disabled={disabled}
               >
                 {isSignIn ? "Sign in" : "Create an account"}
               </button>
