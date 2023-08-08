@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import * as jose from "jose";
 import validator from "validator";
 import { prisma } from "../../../db/prisma";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
 
   const errors: string[] = [];
@@ -53,5 +53,28 @@ export async function POST(req: Request) {
     .setExpirationTime("2h")
     .sign(secret);
 
-  return NextResponse.json({ message: { token: token } }, { status: 200 });
+  const response = NextResponse.json(
+    {
+      user: {
+        id: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        phone: user.phone,
+        city: user.city,
+      },
+    },
+    { status: 200 }
+  );
+
+  response.cookies.set({
+    name: "jwt",
+    value: token,
+    maxAge: 60 * 60 * 2,
+    secure: true,
+    sameSite: "strict",
+    httpOnly: true,
+  });
+
+  return response;
 }
