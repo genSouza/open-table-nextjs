@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import * as jose from "jose";
 import { prisma }  from "../../../db/prisma";
 
 export async function POST(req: Request) {
@@ -64,5 +65,37 @@ export async function POST(req: Request) {
     },
   });
 
-  return NextResponse.json({ message: { user } }, { status: 200 });
+  const alg = "HS256";
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+  const token = await new jose.SignJWT({ userId: user.id })
+    .setProtectedHeader({ alg })
+    .setIssuedAt()
+    .setExpirationTime("2h")
+    .sign(secret);
+
+  const response = NextResponse.json(
+    {
+      user: {
+        id: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        phone: user.phone,
+        city: user.city,
+      },
+    },
+    { status: 200 }
+  );
+
+  response.cookies.set({
+    name: "jwt",
+    value: token,
+    maxAge: 60 * 60 * 2,
+    secure: true,
+    sameSite: "strict",
+    httpOnly: true,
+  });
+
+  return response;
 }

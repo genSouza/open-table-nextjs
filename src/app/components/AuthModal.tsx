@@ -21,7 +21,7 @@ const style = {
 export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
   const { error, loading, data } = useContext(AuthenticationContext);
 
-  const { signIn } = useAuth();
+  const { signIn, signUp } = useAuth();
 
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -61,8 +61,19 @@ export default function AuthModal({ isSignIn }: { isSignIn: boolean }) {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
   const handleClick = () => {
+    console.log(isSignIn);
     if (isSignIn) {
       signIn({ email: inputs.email, password: inputs.password, handleClose });
+    } else {
+      signUp({
+        email: inputs.email,
+        password: inputs.password,
+        firstName: inputs.firstName,
+        lastName: inputs.lastName,
+        phone: inputs.phone,
+        city: inputs.city,
+        handleClose,
+      });
     }
   };
   const signInStyle = "p-1 px-4 mr-3 text-white bg-blue-400 border rounded";
