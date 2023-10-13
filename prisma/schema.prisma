@@ -17,75 +17,113 @@ enum PRICE {
 }
 
 model Restaurant {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   main_image  String
   images      String[]
   description String
   open_time   String
   close_time  String
-  slug        String   @unique
+  slug        String    @unique
   price       PRICE
-  items      Item[]
+  items       Item[]
   location_id String
-  location    Location @relation(fields: [location_id], references: [id])
+  location    Location  @relation(fields: [location_id], references: [id])
   cuisine_id  String
-  cuisine     Cuisine  @relation(fields: [cuisine_id], references: [id])
+  cuisine     Cuisine   @relation(fields: [cuisine_id], references: [id])
   reviews     Review[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  bookings    Booking[]
+  tables      Table[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Item {
-  id          String   @id @default(uuid())
-  name        String
-  price       String
-  description String
-  restaurant  Restaurant @relation(fields: [restaurant_id], references: [id])
+  id            String     @id @default(uuid())
+  name          String
+  price         String
+  description   String
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
   restaurant_id String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 }
 
 model Location {
-  id          String   @id @default(uuid())
+  id          String       @id @default(uuid())
   name        String
-  restaurants  Restaurant[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  restaurants Restaurant[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Cuisine {
-  id          String   @id @default(uuid())
+  id          String       @id @default(uuid())
   name        String
-  restaurants  Restaurant[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  restaurants Restaurant[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model User {
-  id          String   @id @default(uuid())
-  first_name        String
-  last_name        String
-  city        String
-  password    String
-  email       String   @unique
-  phone       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  reviews     Review[]
+  id         String   @id @default(uuid())
+  first_name String
+  last_name  String
+  city       String
+  password   String
+  email      String   @unique
+  phone      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  reviews    Review[]
 }
 
 model Review {
-  id          String   @id @default(uuid())
-  first_name       String
-  last_name      String
-  text String
-  rating      Float
+  id            String     @id @default(uuid())
+  first_name    String
+  last_name     String
+  text          String
+  rating        Float
   restaurant_id String
-  restaurant  Restaurant @relation(fields: [restaurant_id], references: [id])
-  user_id     String
-  user        User @relation(fields: [user_id], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+  user_id       String
+  user          User       @relation(fields: [user_id], references: [id])
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Booking {
+  id                String            @id @default(uuid())
+  number_of_people  Int
+  booking_time      DateTime
+  booker_email      String
+  booker_phone      String
+  booker_first_name String
+  booker_last_name  String
+  booker_occasion   String
+  booker_request    String
+  restaurant_id     String
+  restaurant        Restaurant        @relation(fields: [restaurant_id], references: [id])
+  tables   BookingOnTables[]
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model Table {
+  id              String            @id @default(uuid())
+  seats           Int
+  restaurant_id   String
+  restaurant      Restaurant        @relation(fields: [restaurant_id], references: [id])
+  bookings BookingOnTables[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model BookingOnTables {
+  table_id   String
+  table      Table   @relation(fields: [table_id], references: [id])
+  booking_id String
+  booking    Booking @relation(fields: [booking_id], references: [id])
+
+  @@id([booking_id, table_id])
 }

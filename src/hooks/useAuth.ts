@@ -72,7 +72,6 @@ const useAuth = () => {
         "http://localhost:3000/api/auth/signup",
         { email, password, firstName, lastName, phone, city }
       );
-      console.log(response);
       setAuthState({
         data: response.data,
         error: null,
@@ -80,7 +79,6 @@ const useAuth = () => {
       });
       handleClose && handleClose();
     } catch (error: any) {
-      console.error(error);
       setAuthState({
         data: null,
         error: error.response.data

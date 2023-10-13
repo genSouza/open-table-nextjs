@@ -9,7 +9,7 @@ type Data = {
 };
 
 export async function GET() {
-  //   await prisma.table.deleteMany();
+  await prismaClient.table.deleteMany();
   await prismaClient.review.deleteMany();
   await prismaClient.item.deleteMany();
   await prismaClient.restaurant.deleteMany();
@@ -1309,22 +1309,22 @@ export async function GET() {
     ],
   });
 
-  // await prisma.table.createMany({
-  //   data: [
-  //     {
-  //       restaurant_id: vivaanId,
-  //       seats: 4,
-  //     },
-  //     {
-  //       restaurant_id: vivaanId,
-  //       seats: 4,
-  //     },
-  //     {
-  //       restaurant_id: vivaanId,
-  //       seats: 2,
-  //     },
-  //   ],
-  // });
+  await prismaClient.table.createMany({
+    data: [
+      {
+          restaurant_id: vivaanId!,
+          seats: 4,
+        },
+        {
+          restaurant_id: vivaanId!,
+          seats: 4,
+        },
+        {
+          restaurant_id: vivaanId!,
+        seats: 2,
+      },
+    ],
+  });
 
   prismaClient.$disconnect();
   return NextResponse.json({ name: "hello" });

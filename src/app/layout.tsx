@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body>
+      <body suppressHydrationWarning={true}>
         <main className="w-screen min-h-screen bg-gray-100">
           <AuthContext>
             <main className="m-auto bg-white max-w-screen-2xl">

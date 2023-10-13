@@ -9,7 +9,7 @@ const RestaurantLayout = ({
   params: { slug: string };
 }) => {
   return (
-    <main>
+    <main suppressHydrationWarning={true}>
       <Header name={params.slug}/>
       <div className="flex items-start justify-between w-2/3 m-auto 0 -mt-11">
         {children}
