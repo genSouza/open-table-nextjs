@@ -4,7 +4,7 @@ import halfStar from "../../../public/icons/half-star.png";
 import emptyStar from "../../../public/icons/empty-star.png";
 import Image from "next/image";
 import { Review } from "@prisma/client";
-import CalculateReviewRatingAverage from "@/utils/calculateReviewRatingAverage";
+import CalculateReviewRatingAverage from "@/utils/CalculateReviewRatingAverage";
 
 const Stars = ({ reviews, rating }: { reviews: Review[]; rating?: number }) => {
   const averageRating = rating || CalculateReviewRatingAverage(reviews);

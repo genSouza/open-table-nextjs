@@ -34,7 +34,6 @@ const useAvailabilities = () => {
         }
       );
       setLoading(false);
-      console.log(response.data);
       setData(response.data);
     } catch (error: any) {
       setLoading(false);

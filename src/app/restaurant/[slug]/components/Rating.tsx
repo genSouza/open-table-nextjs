@@ -1,5 +1,5 @@
 import Stars from "@/app/components/Stars";
-import CalculateReviewRatingAverage from "@/utils/calculateReviewRatingAverage";
+import CalculateReviewRatingAverage from "@/utils/CalculateReviewRatingAverage";
 import { Review } from "@prisma/client";
 import React from "react";
 

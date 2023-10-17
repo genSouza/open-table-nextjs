@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { RestaurantCardType } from "../page";
 import Price from "./Price";
-import CalculateReviewRatingAverage from "@/utils/calculateReviewRatingAverage";
+import CalculateReviewRatingAverage from "@/utils/CalculateReviewRatingAverage";
 import Stars from "./Stars";
 
 interface Props {

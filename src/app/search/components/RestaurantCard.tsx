@@ -1,6 +1,6 @@
 import Price from "@/app/components/Price";
 import Stars from "@/app/components/Stars";
-import CalculateReviewRatingAverage from "@/utils/calculateReviewRatingAverage";
+import CalculateReviewRatingAverage from "@/utils/CalculateReviewRatingAverage";
 import { Cuisine, PRICE, Location, Restaurant, Review } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
