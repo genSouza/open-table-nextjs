@@ -18,7 +18,6 @@ const AuthContext = ({ children }: { children: React.ReactNode }) => {
     data: null,
     error: null,
   });
-  // const { fetchUser } = useAuth();
 
   const fetchUser = async () => {
     setAuthState({
@@ -42,7 +41,6 @@ const AuthContext = ({ children }: { children: React.ReactNode }) => {
           }
         );
 
-        console.log(response);
         axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 
         setAuthState({

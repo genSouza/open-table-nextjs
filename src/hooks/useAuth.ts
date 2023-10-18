@@ -27,7 +27,6 @@ const useAuth = () => {
         "http://localhost:3000/api/auth/signin",
         { email, password }
       );
-      console.log(response);
       setAuthState({
         data: response.data,
         error: null,

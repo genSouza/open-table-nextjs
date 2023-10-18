@@ -46,7 +46,6 @@ const ReservationCard = ({
       time: selectedTime,
       partySize: selectedPartySize,
     });
-    console.log(data);
   };
 
   const filterTimeByRestaurantWindow = () => {
